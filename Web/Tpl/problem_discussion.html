@@ -1,0 +1,65 @@
+<?php
+require 'head.php';
+?>
+<script src="<?=C('APP_URL');?>Tpl/assets/js/showdown.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+function post()
+{
+	$.post("<?=U('problem/commentajax');?>",
+	{
+		pid:<?=$_GET['pid'];?>,
+		uid:<?php global $user; echo $user->id;?>,
+		comment:$("#editarea").val()
+	},
+	function(data,status){
+		if(data=="ok")
+		{
+			alert("Success!");
+			location.reload();
+		}
+	});
+}
+</script>
+<div class="modal hide" id="SubmitModal">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h4>Post a New Comment</h4>
+	</div>
+		<div class="modal-body" style="padding-top:5px">
+			<h5 class="center">Attention: We use <strong>MarkDown</strong> to parse your comment!</h5>
+			<textarea name="comment" id="editarea" style="width:730px;height:320px;"></textarea>
+			<div class="alert alert-error hide margin-0" id="submit_result"></div>
+		</div>
+		<div class="modal-footer form-inline">
+			<input type="hidden" name="method" value="submit" />
+			<button class="btn btn-primary shortcut-hint" type="submit" onclick="javascript:post();">Submit</button>
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+		</div>
+</div>
+<div class="row-fluid">
+	<div class="span8 offset2">
+		<a href="#" data-toggle="modal" data-target="#SubmitModal" class="btn btn-primary btn-small shortcut-hint" id="new_msg"><i class="icon-file"></i> Post a New Comment</a>
+		<p></p>
+		<table class="table table-bordered" id="commentList">
+			<?php
+			global $user;
+			foreach($res as $item)
+			{
+				echo '<tr><td style="text-align:left;">';
+				echo '<strong>',$item['name'],'</strong>',' posted on <em>',date('m/d/Y H:i', $item['time']),'</em><br>';
+				echo '<span class="label"><a target="_blank" style="color:#FFF;" href="',U('solution/record?pid='.$_GET['pid'].'&name='.$item['name']),'">View his/her solution(s)</a></span>';
+				echo '<br><div id="md">',$item['text'],'</div>';
+				echo '</td></tr>';
+			}
+			?>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+var converter=new Showdown.converter();
+$("[id='md']").each(function(){
+	$(this).html(converter.makeHtml($(this).text()));
+});
+</script>
+<?php
+require 'foot.php';

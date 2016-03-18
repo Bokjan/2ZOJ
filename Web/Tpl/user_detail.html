@@ -1,0 +1,22 @@
+<?php
+require 'head.php';
+global $user;
+?>
+<div class="row-fluid">
+<div class="span4 offset4">
+<table class="table table-striped table-bordered table-hover">
+<tbody>
+<tr><td>ID</td><td><?=$res->id;?></td></tr>
+<tr><td>Username</td><td><?=$res->name;?></td></tr>
+<tr><td>Nickname</td><td><?=$res->nick;?></td></tr>
+<tr><td>Group</td><td><?=$res->group;?></td></tr>
+<tr><td>E-mail</td><td><?=$res->mail;?></td></tr>
+<tr><td>Accepted</td><td><?=$res->accept;?></td></tr>
+<tr><td>Submitted</td><td><?=$res->submit;?></td></tr>
+<tr><td>Reg Time</td><td><?=date('m/d/Y H:i:s', $res->jointime);?></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<?php
+require 'foot.php';

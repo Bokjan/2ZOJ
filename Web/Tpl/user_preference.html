@@ -1,0 +1,54 @@
+<?php
+require 'head.php';
+?>
+<script type="text/javascript">
+function os()
+{
+	url="<?=U('user/opensource');?>";
+	$.get(url,function(data,status){
+		if(data=="ok")
+			alert('You\'ve already open-sourced all your codes.');
+	});
+}
+function backup()
+{
+	alert("This feature is still under construction.");
+}
+</script>
+<div class="row-fluid">
+		   <div class="span6 offset3">
+		  <h2>Preferences</h2>
+		  <form id="form_preferences" action="<?=U('user/setpref');?>" method="post">
+		  	<?php global $user;?>
+			<select name="lang">
+				<option value="c" <?php if($user->lang=='c') echo 'selected="selected"';?>>C99</option>
+				<option value="cpp"<?php if($user->lang=='cpp') echo 'selected="selected"';?>>C++11</option>
+				<option value="pas"<?php if($user->lang=='pas') echo 'selected="selected"';?>>Pascal</option>
+			</select>
+			<br>
+			<label class="checkbox">
+			  <input name="open" type="checkbox" <?php if($user->share) echo 'checked="checked"';?>> Open-Source my code by default
+			</label>
+			<input type="submit" class="btn" value="Save">
+		  </form>
+
+		  <h2>Backup my code(INOP)</h2>
+		  <p>
+			Download your last accepted submit of every problem.<br>You can do this only once a week.
+					  </p>
+		  <button class="btn" id="download_btn" onclick="javascript:backup();">Backup &amp; Download</button>
+		  <p></p>
+		  <h2>Open source</h2>
+		  <p>
+			<strong>Why Should I Open Source My Codes?</strong>
+			<ol>
+			  <li>Open source softwares are a kind of great cultures which can date back to the early ages of the computer science history, and they are also the foundation of the web, the Internet, and our world.</li>
+			  <li>If everybody shares his code with the world, it will give everyone chances to use the programs, distribute the programs, understand the programs and improve the programs, which helps the original author in turn.</li>
+			  <li>Codes in the OI are relatively short, but they can also be very obscure. Making them open-source is to help ourselves in the past time.</li>
+			</ol>
+		  </p>
+		  <button class="btn" id="open_source" onclick="javascript:os();">Open source all my code</button>
+		</div>
+</div>
+<?php
+require 'foot.php';

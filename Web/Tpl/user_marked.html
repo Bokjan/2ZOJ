@@ -1,0 +1,115 @@
+<?php
+require 'head.php';
+?>
+<div class="row-fluid">
+<div class="span5 offset1">
+<table class="table table-hover table-condensed table-bordered">
+	<thead><tr>
+	<th>ID</th>
+	<th colspan="2">Title</th>
+	<th>Level</th>
+	<th>Delete</th>
+	</tr></thead>
+	<tbody id="marked_list">
+<?php
+$count = count($res);
+for($i = 0; $i < intval($count / 2); $i++)
+{
+if($res[$i]['accepted'] == '1')
+{
+	$status = '<td><i class="icon-ok" style="color:green"/></td>';
+}
+elseif($res[$i]['accepted'] == '0')
+{
+	$status = '<td><i class="icon-remove" style="color:red"></i></td>';
+}
+elseif($res[$i]['accepted'] == NULL)
+{
+	$status = '<td><i class="icon-edit" style="color:purple"></i></td>';
+}
+?>
+	<tr>
+	<td><?=$res[$i]['id']?></td>
+	<?=$status;?>
+	<td><a href="<?=U('problem/detail?pid='.$res[$i]['id'])?>"><?=$res[$i]['title']?></a></td>
+	<td><?=$res[$i]['difficulty']?></td>
+	<td><i data-pid="<?=$res[$i]['id']?>" style="cursor:pointer;" class="text-error icon-remove"></i></td>
+	</tr>
+<?php
+}
+?>
+	</tbody>
+</table>
+</div>
+<div class="span5">
+<table class="table table-hover table-condensed table-bordered">
+	<thead><tr>
+	<th>ID</th>
+	<th colspan="2">Title</th>
+	<th>Level</th>
+	<th>Delete</th>
+	</tr></thead>
+	<tbody id="marked_list2">
+<?php
+for($i = intval($count / 2); $i < $count; $i++)
+{
+if($res[$i]['accepted'] == '1')
+{
+	$status = '<td><i class="icon-ok" style="color:green"/></td>';
+}
+elseif($res[$i]['accepted'] == '0')
+{
+	$status = '<td><i class="icon-remove" style="color:red"></i></td>';
+}
+elseif($res[$i]['accepted'] == NULL)
+{
+	$status = '<td><i class="icon-edit" style="color:purple"></i></td>';
+}
+?>
+	<tr>
+	<td><?=$res[$i]['id']?></td>
+	<?=$status;?>
+	<td><a href="<?=U('problem/detail?pid='.$res[$i]['id'])?>"><?=$res[$i]['title']?></a></td>
+	<td><?=$res[$i]['difficulty']?></td>
+	<td><i data-pid="<?=$res[$i]['id']?>" style="cursor:pointer;" class="text-error icon-remove"></i></td>
+	</tr>
+<?php
+}
+?>
+	</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript"> 
+$(document).ready(function(){
+	$('#ret_url').val("<?=U('user/marked')?>");
+	$('#marked_list').click(function(E){
+		var $target = $(E.target);
+		if($target.is('i')){
+			var pid = $target.attr('data-pid');
+			$.get('<?=U('Ajax/MarkProblem')?>/pid/'+pid+'/op/remove',function(result){
+				if(/__ok__/.test(result)){
+					//alert("Successfully Deleted");
+					//location.reload();
+					$target.parents('tr').remove();
+				}
+			});
+		}
+	});
+	$('#marked_list2').click(function(E){
+		var $target = $(E.target);
+		if($target.is('i')){
+			var pid = $target.attr('data-pid');
+			$.get('<?=U('Ajax/MarkProblem')?>/pid/'+pid+'/op/remove',function(result){
+				if(/__ok__/.test(result)){
+					//alert("Successfully Deleted");
+					//location.reload();
+					$target.parents('tr').remove();
+				}
+			});
+		}
+	});
+}); 
+</script>
+<?php
+require 'foot.php';

@@ -1,0 +1,22 @@
+<?php
+return array(
+	//'é”?=>å€?	
+	'DB_PREFIX'=>'oj_',
+	'DB_HOST'=>'localhost',
+	'DB_NAME'=>'oj',
+	'DB_USER'=>'root',
+	'DB_PW'=>'root',
+	'DB_PORT'=>'3306',
+	'DB_USEPREFIX'=>true,
+	//'URL_SEPE'=>'-',
+	//'URL_SUFFIX'=>'.html',
+	'URL_MODE'=>1,//0=>ä¸€èˆ¬PATHINFO,1=>REWRITE+PATHINFO
+	//'APP_URL'=>'http://172.16.12.202/',
+	'APP_URL'=>'/',
+	'DEFAULT_METHOD'=>'index/index',
+	'GZIP'=>false,
+	'JUDGER_PATH'=>'/home/OJ/',
+	'CROOT'=>'/home/OJ/contest/',
+	'LANG'=>'zh_cn',
+	);
+?>

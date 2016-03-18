@@ -1,0 +1,108 @@
+<?php
+require 'head.php';
+?>
+<script type="text/javascript">
+function save()
+{
+	url="<?=U('problem/doedit');?>";
+	$.post(url,
+		{
+			pid:$("#pid").val(),
+			title:$("#title").val(),
+			description:$("#description").val(),
+			input:$("#input").val(),
+			output:$("#output").val(),
+			sample_input:$("#sample_input").val(),
+			sample_output:$("#sample_output").val(),
+			hint:$("#hint").val(),
+			source:$("#source").val(),
+			tlim:$("#tlim").val(),
+			mlim:$("#mlim").val(),
+			dataset:$("#dataset").val(),
+			difficulty:$("#difficulty").val()
+		},function(data,status){
+			if(data=="ok")
+				alert("Success!");
+			else
+				alert(data);
+	});
+}
+</script>
+<div id="probdisp" class="container-fluid">
+			<div class="row-fluid">
+				<div class="span8" id="leftside" style="font-size:16px">
+					<div class="row-fluid center">
+						<h2>务必注意使用MarkDown语法编写！</h2>
+					</div>
+					<div class="center problem-title">
+						<input type="text" id="title" value="<?=$pdata->title;?>" style="height:30px;">
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Description</h3>
+							<div class="well well-small"><textarea id="description" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Input</h3>
+							<div class="well well-small"><textarea id="input" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Output</h3>
+							<div class="well well-small"><textarea id="output" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Sample Input</h3>
+							<div class="well well-small"><textarea id="sample_input" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Sample Output</h3>
+							<div class="well well-small"><textarea id="sample_output" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Hint</h3>
+							<div class="well well-small"><textarea id="hint" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<h3 class="problem-subtitle">Source</h3>
+							<div class="well well-small"><textarea id="source" style="width:800px;height:100px;"></textarea></div>
+						</div>
+					</div>
+				</div>
+				<p><br></p><p><br></p><p><br></p>
+				<div class="span4" id="rightside">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="well well-small">
+								<table class="table table-condensed table-striped" style="margin-bottom:0px;">
+									<tbody>
+										<tr><td>时间限制</td><td><input id="tlim" style="height:30px;" type="text" value="1000"> ms</td></tr>
+										<tr><td>内存限制</td><td><input id="mlim" style="height:30px;" type="text" value="128000"> KB</td></tr>
+										<tr><td>数据组数</td><td><input id="dataset" style="height:30px;" type="text" value="10"></td></tr>
+										<tr><td>难度</td><td><input id="difficulty" style="height:30px;" type="text" value=""></td></tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid"><div class="span12" style="text-align: center;">
+						<div id="function" class="well well-small problem-operation" style="margin-top:10px">
+								<button onclick="save();" class="btn btn-warning">提交</button>
+						</div>
+					</div></div>
+				</div>
+			</div>
+		</div>
+<?php
+require 'foot.php';

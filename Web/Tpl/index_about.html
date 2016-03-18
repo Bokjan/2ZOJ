@@ -1,0 +1,192 @@
+<?php
+require 'head.php';
+?>
+<script type="text/javascript">
+function change(){
+	if($("#switcher").val()=="en-US"){
+		$("#switcher").text("English");
+		$("#switcher").val("zh-cmn-Hans");
+		$("#en-US").attr("style", "display:none;");
+		$("#zh-cmn-Hans").attr("style", "");
+	}
+	else{
+		$("#switcher").text("简体中文");
+		$("#switcher").val("en-US");
+		$("#zh-cmn-Hans").attr("style", "display:none;");
+		$("#en-US").attr("style", "");
+	}
+}
+</script>
+<div class="row-fluid">
+<div class="span8 offset2">
+<button class="btn btn-primary" id="switcher" value="en-US" onclick="change();">简体中文</button>
+<div id="en-US" style="">
+<h3>About 2ZOJ</h3>
+<p>2ZOJ is a program-set designed for Informatics training. We're pleased that you can enjoy our safe, opening, perfect services.<br>2ZOJ is a non-profit site supported by No.2 High School of Zhuzhou, Hunan. We appreciate your donation.</p>
+<h3>Contact Us</h3>
+<div class="row-fluid">
+<div class="span5">
+<blockquote><pre>
+1.Boyin Chen(RD)
+　E-mail: i@bokjan.com
+　QQ: 752885400
+　Blog: http://bokjan.com
+</pre>
+<pre>
+2.Tham(OP)
+　QQ: 718933192
+　E-mail: tham@mails.ccnu.edu.cn
+</pre></blockquote>
+</div>
+</div>
+
+<h3>Compiler Options</h3>
+<div class="row-fluid">
+<div class="span7">
+<table class="table table-hover table-bordered">
+<tr><td>C99</td><td>gcc -Wall -std=c99 -O2 -DOJ -o foo src.c -lm</td></tr>
+<tr><td>C++11</td><td>g++ -Wall -std=c++0x -O2 -DOJ -o foo src.cpp -lm</td></tr>
+<tr><td>Pascal</td><td>fpc -Mtp -v0 -O2 -dOJ -Sgic -Tlinux -ofoo src.pas -lm</td></tr>
+</table>
+</div>
+</div>
+
+<h3>Hardware, OS and Compiler</h3>
+<p>
+CPU: Intel&reg; Core™ i5-3470 3.20GHz &times; 4 (Normal)<br>
+CPU: Intel&reg; Pentium&reg; G2020 2.90GHz &times; 2 (Contest)<br>
+RAM: 8GB DDR3 1600MHz (Normal)<br>
+RAM: 4GB DDR3 1333MHz (Contest)<br>
+Operating System: CentOS 6.7 x86_64<br>
+Compiler: GNU Compiler Collection 4.4.7 / Free Pascal Compiler 2.6.4
+</p>
+
+<h3>Time and Memory Limits</h3>
+<p>Judger uses POSIX APIs to monitor your program. Notice that MEMORY LIMIT is not in KiB. We all know that 1 KB isn't 1024 bytes but 1000 bytes. We limit your program's resource usage accurately, so, just write your codes freely. For limits' details, see problem's page.</p>
+
+<h3>Input and Output</h3>
+<p>Pay ATTENTION that in NOI series you use file I/O but Standard Input/Output (aka "stdio") are used here. Judger will execute freopen automatically.<br>For example, you include &lt;stdio.h&gt; and use the function printf / scanf in C or you include &lt;iostream&gt; and use the template std::cin / std::cout in C++ for I/O.</p>
+
+<h3>Explanations for Solution's Result</h3>
+<div class="row-fluid">
+<div class="span10">
+<table class="table table-hover table-bordered">
+<tr><td>Waiting</td><td>Your program is waiting for judging.</td></tr>
+<tr><td>Accepted</td><td>Your program is completely right.</td></tr>
+<tr><td>Wrong Answer</td><td>The output is not correct.</td></tr>
+<tr><td>Time Limit Exceed</td><td>Your program runs out of test case's time.</td></tr>
+<tr><td>Memory Limit Exceed</td><td>Your program runs out of test case's memory.</td></tr>
+<tr><td>Runtime Error</td><td>This error may be caused by invalid memory access, stack overflow, etc.</td></tr>
+<tr><td>Compile Error</td><td>Judger cannot find the executable, see compiler message.</td></tr>
+</table>
+</div>
+</div>
+
+<h3>Explanations for Frequently Occurred Issues</h3>
+<ul>
+<li>We improved the safety of OS Environment, dangerous header files or MACROs / functions are disallowed. <br>For example, system in stdlib is disallowed.</li>
+<li>In 64-bit environment, a pointer costs 8 bytes.</li>
+<li>Function main must return a integer, 0 (zero), or causes Runtime Error.</li>
+<li>The placeholder for a long long (64 bits) is %lld.<br>But in some versions of Dev-C++, you use %I64d, or cause strange issues.</li>
+<li>Function itoa is not available, use sprintf(charbuff, "%d", integer).</li>
+<li>Pay attention to the differences between MS Windows' "\r\n" and Unix-Liked OS' "\n".</li>
+<li>Make your program has no warnings if possible.</li>
+</ul>
+<h3>Why does my program run well on my computer, but fail on OJ?</h3>
+<ul>
+<li>Judger is based on Linux, and we use GCC. When comparing your output with standard output, Judger ignores spaces, line feeds and etc. by default.</li>
+<li>Judger also limits your stack memory (10240KB). Judger throws a RUNTIME ERROR when stack overflows.</li>
+<li>Every variable should be initialized. You may assume that a variable is 0 but in fact, it is not.</li>
+<li>Linux has a strict control on memory access. Some invalid pointer may not cause fatal error on Windows but it cannot run on our OJ.</li>
+<li>Serious memory leak issue may make your process killed by system protection module. So remember that you should release any memory you allocated.</li>
+<li>Caution: binary float operations differ from decimal float operations.</li>
+<li>If you learned over two types of programming languagse, you can try to 'translate' your code to another language and then submit. You may find some mistakes when translating.</li>
+</ul>
+</div>
+
+<div id="zh-cmn-Hans" style="display:none;">
+<h3>关于在线评测系统</h3>
+<p>株洲市第二中学在线评测系统是一个被设计用来进行信息学训练的程序集，很高兴您能享受我们的安全、开放、优秀的服务。<br>株洲市第二中学在线评测系统是一个由株洲市第二中学支持运营的非盈利站点。若您捐赠，我们十分感激。</p>
+<h3>联系我们</h3>
+<div class="row-fluid">
+<div class="span5">
+<blockquote><pre>
+1.Boyin Chen
+　博客: http://bokjan.com
+　QQ: 752885400
+　电子邮件: i@bokjan.com
+</pre>
+<pre>
+2.Tham
+　QQ: 718933192
+　电子邮件: tham@mails.ccnu.edu.cn
+</pre></blockquote>
+</div>
+</div>
+
+<h3>编译器参数</h3>
+<div class="row-fluid">
+<div class="span7">
+<table class="table table-hover table-bordered">
+<tr><td>C99</td><td>gcc -Wall -std=c99 -O2 -DOJ -o foo src.c -lm</td></tr>
+<tr><td>C++11</td><td>g++ -Wall -std=c++0x -O2 -DOJ -o foo src.cpp -lm</td></tr>
+<tr><td>Pascal</td><td>fpc -Mtp -v0 -O2 -dOJ -Sgic -Tlinux -ofoo src.pas -lm</td></tr>
+</table>
+</div>
+</div>
+
+<h3>硬件、操作系统和编译器</h3>
+<p>
+处理器： Intel&reg; Core™ i5-3470 3.20GHz &times; 4 (普通)<br>
+处理器： Intel&reg; Pentium&reg; G2020 2.90GHz &times; 2 (比赛)<br>
+内存： 8GB DDR3 1600MHz (普通)<br>
+内存： 4GB DDR3 1333MHz (比赛)<br>
+操作系统： CentOS 6.7 x86_64<br>
+编译器： GCC 4.4.7 / FPC 2.6.4
+</p>
+
+<h3>时间和内存限制</h3>
+<p>评测机使用POSIX应用程序接口来监测您的程序。请注意内存限制的单位不是KiB。大家都知道1KB不是1024字节而是1000字节。我们对您程序的资源开销监测是十分精确的，所以，轻松地写您的代码就好了。对于每个问题的详细限制，参见问题页面。</p>
+
+<h3>输入和输出</h3>
+<p>请注意在NOI系列竞赛中您使用文件输入输出但这里使用标准输入输出（也作“stdio”）。评测机将自动执行文件重定向。<br>比如说，在C中您包含&lt;stdio.h&gt;然后使用printf/scanf函数，或在C++中您包含&lt;iostream&gt;然后使用std::cin/std::cout模版以输入输出。</p>
+
+<h3>评测结果解释</h3>
+<div class="row-fluid">
+<div class="span10">
+<table class="table table-hover table-bordered">
+<tr><td>Waiting</td><td>您的程序正在等待评测</td></tr>
+<tr><td>Accepted</td><td>您的程序完全正确</td></tr>
+<tr><td>Wrong Answer</td><td>输出不正确</td></tr>
+<tr><td>Time Limit Exceed</td><td>您的程序运行时间超限</td></tr>
+<tr><td>Memory Limit Exceed</td><td>您的程序内存开销超限</td></tr>
+<tr><td>Runtime Error</td><td>这个错误可能由于非法内存访问、栈溢出等引起</td></tr>
+<tr><td>Compile Error</td><td>评测机无法找到生成的可执行文件，请查看编译器信息</td></tr>
+</table>
+</div>
+</div>
+<h3>常见问题解释</h3>
+<ul>
+<li>我们加强了操作系统安全性，危险的头文件或宏或函数是禁用的。比如，stdlib头里的system是不被允许的。</li>
+<li>在64位环境中，一个指针占用8个字节。</li>
+<li>main函数必须返回一个整数，0，否则会造成运行时错误。</li>
+<li>long long类型的占位符是%lld。<br>但有时在Dev-C++中需要使用%I64d，否则会造成奇怪的错误。</li>
+<li>itoa函数不可用，使用sprintf(charbuff, "%d", integer)代替。</li>
+<li>注意微软视窗的"\r\n"和类Unix操作系统的"\n"之间的区别。</li>
+<li>尽量使得您的程序没有警告。</li>
+</ul>
+<h3>为什么程序在我的电脑上能够正常运行，而在评测系统上不能？</h3>
+<ul>
+<li>评测系统建立在Linux下，编译器为GCC。评测系统在比较你的输出时默认采用忽略一切无效字符（空格，回车等）的策略。</li>
+<li>评测系统对你的程序内存的使用进行限制，同时也对你的程序栈的使用进行限制（10240KB）。如果你的程序使用递归多达100,000层或更多，那么你的程序很可能运行时出错。</li>
+<li>评测系统和你的电脑使用的内存安排方式可能不同。某些在你的电脑上没有经过初始化，理应为0的变量在评测系统上有可能并不如你所想的那样。</li>
+<li>Linux对内存的访问控制更为严格，因此在Windows上可能正常运行的无效指针或数组下标访问越界，在评测系统上无法运行。</li>
+<li>严重的内存泄露的问题很可能会引起系统的保护模块杀死你的进程。因此，凡是使用动态内存分配而得的内存空间，请记得释放。</li>
+<li>注意浮点运算，二进制浮点数运算的时候很有可能会造成意想不到的差异。</li>
+<li>如果你会两种以上的语言，不妨将你的代码“翻译”成另一种语言然后提交，或许在翻译的时候你会发现你的程序的错误。如果翻译以后能够正常通过，那么请仔细检查你原来的程序。</li>
+</ul>
+</div>
+</div>
+</div>
+<?php
+require 'foot.php';

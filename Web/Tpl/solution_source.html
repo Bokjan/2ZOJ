@@ -1,0 +1,96 @@
+<?php
+require 'head.php';
+?>
+<div class="row-fluid">
+	<div class="span4 offset2">
+		<h3>Summary</h3>
+		<table class="table table-hover table-bordered" style="font-size:smaller; align:left">
+			<tr><td>User</td><td><a href="<?=U("user/detail?uid={$data->uid}");?>" target="_blank"><?=$username;?></a></td></tr>
+			<tr><td>Time</td><td><?=date('m/d/Y H:i:s', $data->time);?></td></tr>
+			<tr><td>Result</td><td><?=$resultHtml;?></td></tr>
+			<tr><td>Problem</td><td><a href="<?=U('problem/detail?pid='.$data->pid);?>" target="_blank">P<?php echo $data->pid,' ',$problem['title'];?></a></td></tr>
+			<tr><td>Language</td><td><?php if($data->lang=='cpp') echo 'C++11';elseif($data->lang=='c') echo 'C99';else echo 'Pascal';?></td></tr>
+			<tr><td>Time Usage</td><td><?=$data->timeused;?> ms</td></tr>
+			<tr><td>Memory Usage</td><td><?=$data->memused;?> KB</td></tr>
+			<tr><td>Difficulty of Problem</td><td><?=$problem['difficulty'];?></td></tr>
+			<tr><td>Total Submit of Problem</td><td><?=$problem['submit'];?></td></tr>
+			<tr><td>Total Accepted of Problem</td><td><?=$problem['accept'];?></td></tr>
+			<tr><td>Ratio of Accepted / Submit</td><td><?php echo intval($problem['accept']/$problem['submit']*100);?>%</td></tr>
+		</table>
+	</div>
+	<div class="span4">
+		<h3>Test Cases 
+			<?php
+				global $user;
+				if($data->result!='AC' && $data->uid==$user->id)
+					echo '<a href="',U('solution/testdata?id='.$data->id),'" target="_blank">DOWNLOAD DATA</a>';
+			?>
+		</h3>
+		<table class="table table-hover table-bordered" style="font-size:smaller; align:left">
+			<tr><th>Case</th><th>Time</th><th>Mem</th><th>Return</th><th>Result</th><th>Score</th></tr>
+			<?php
+				$ite=explode("\n", $data->resdata);
+				$count=count($ite) - 1;
+				for($i = 0; $i < $count; $i++)
+				{
+					echo "<tr><td>{$i}</td>";
+					$s=explode(' ', $ite[$i]);
+					foreach($s as $item)
+					{
+						echo "<td>{$item}</td>";
+					}
+					echo '</tr>';
+				}
+			?>
+		</table>
+	</div>
+</div>
+<?php
+if(!empty($data->compmsg)): ?>
+<div class="row-fluid">
+	<div class="offset2 span8">
+		<h3>Compiler Message</h3>
+		<blockquote id="compmsg"><?php
+			$msgset=explode("\n", htmlspecialchars($data->compmsg));
+			foreach ($msgset as $item)
+			{
+				echo $item,'<br>';
+			}
+			?></blockquote>
+	</div>
+</div>
+<?php endif;
+global $user;
+if($data->uid==$user->id || $data->open || $user->admin >= 1):
+ ?>
+<script src="<?=C('APP_URL');?>Tpl/assets/js/google-code-prettify/prettify.js" type="text/javascript" charset="utf-8"></script>
+<div class="row-fluid">
+	<div class="offset2 span8">
+		<h3>Source Code</h3>
+			<?php 
+			if($data->uid==$user->id){
+			?>
+			<form action="<?=U('solution/openorclose');?>" method="post">
+				<input type="hidden" name="id" value="<?=$data->id;?>">
+		<?php
+				if($data->open){
+		?>
+				<button type="submit" name="option" class="btn btn-danger" value="0">Make It Private</button>
+		<?php
+				}
+				else{
+		?>
+				<button type="submit" name="option" class="btn btn-danger" value="1">Make It Public</button>
+		<?php
+			}
+		 }?>
+		</form>
+		<pre class="prettyprint linenums lang-cpp"><?php echo htmlspecialchars(file_get_contents(C('JUDGER_PATH').'src/'.$data->id.'.'.$data->lang)); ?></pre>
+	</div>
+	<script type="text/javascript">
+		prettyPrint();
+	</script>
+</div>
+<?php endif;?>
+<?php
+require 'foot.php';

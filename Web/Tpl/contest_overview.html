@@ -1,0 +1,48 @@
+<?php
+require 'head.php';
+?>
+<div class="row-fluid">
+	<div class="span10 offset1"><table class="table table-striped table-bordered">
+			<thead><tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Problemset</th>
+                <th>Start at</th>
+                <th>End at</th>
+                <th>Operation</th>
+                <th>Result</th>
+            </tr></thead>
+            <tbody>
+                <?php
+                	$FormUrl = U('contest/upload');
+                  foreach($res as $item)
+                  {
+		              echo '<tr>';
+		              echo '<td>',$item['id'],'</td>';
+		              echo '<td>',$item['title'],'</td>';
+		              $t = sprintf('%04d', $item['id']);
+		              if(TIME >= $item['start'] && TIME <= $item['end']){
+						  echo "<td><a href=\"/Contest/data/{$t}/description.pdf\" target=\"_blank\">Download</a></td>";
+		              }else{
+						  echo '<td>Not available</td>';		              
+		              }
+		              echo '<td>',date('m/d/Y H:i', $item['start']),'</td>';
+		              echo '<td>',date('m/d/Y H:i', $item['end']),'</td>';
+		              echo "<td><form action=\"{$FormUrl}\" method=\"post\" enctype=\"multipart/form-data\">";
+		              echo '<input type="file" name="file"/><input type="submit" value="Submit">';
+		              echo "<input type=\"hidden\" name=\"cid\" value=\"{$item['id']}\" /></form></td> ";
+		              if(TIME > $item['end']){
+						  echo "<td><a href=\"/Contest/data/{$t}/result.csv\" target=\"_blank\">Download</a></td>";
+		              }else{
+						  echo '<td>Not available</td>';		              
+		              }
+		              echo "</tr>\n";
+                  }
+                  
+                ?>
+              </tbody>
+		</table>
+	</div>
+</div>
+<?php
+require 'foot.php';
