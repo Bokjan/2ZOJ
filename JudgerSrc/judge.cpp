@@ -109,9 +109,9 @@ bool SpecialJudge(int point, char *probpath)
     sprintf(spjer, "%sspj", probpath);
     /* *
      * 评测插件命令行格式
-     * 本体路径 测试点编号 提交程序输出文件
+     * 本体路径 问题目录 测试点编号 提交程序输出文件
      * */
-    sprintf(cmd, "%s %d %s", spjer, point, Out);
+    sprintf(cmd, "%s %s %d %s", spjer, probpath, point, Out);
     system(cmd);
     sprintf(result, "%sspj.result", probpath);
     FILE *fp = fopen(result, "r");
