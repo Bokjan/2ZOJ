@@ -257,7 +257,7 @@ void Judge(MYSQL_ROW rq)
 			sprintf(__result2, "%s %d\n", __result, PtScore);
 			task.Score += PtScore;
 		}
-        else if(!ThisPtSpec && SPJ && SpecialJudge(i, ProblemPath)){
+        else if(!ThisPtSpec && SPJ && SpecialJudge(i, SPJProblemPath)){
 			sprintf(__result2, "%s %d\n", __result, PtScore);
 			task.Score += PtScore;
         }
