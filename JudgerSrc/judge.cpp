@@ -101,6 +101,27 @@ bool Compare(char *Ans)
 	fclose(o);
 	return true;
 }
+bool SpecialJudge(int point, char *probpath)
+{
+    char cmd[10240], result[TinyBuf];
+    char Out[TinyBuf], spjer[TinyBuf];
+	sprintf(Out, "%sfoo.out", TmpPath);
+    sprintf(spjer, "%sspj", probpath);
+    /* *
+     * 评测插件命令行格式
+     * 本体路径 测试点编号 提交程序输出文件
+     * */
+    sprintf(cmd, "%s %d %s", spjer, point, Out);
+    system(cmd);
+    sprintf(result, "%sspj.result", probpath);
+    FILE *fp = fopen(result, "r");
+    int isCorrect = 0;
+    fscanf(fp, "%d", isCorrect);
+    fclose(fp);
+    sprintf(cmd, "rm -f %s", result);
+    system(cmd);
+    return isCorrect;
+}
 void Done(char* sid,RowOfTableSubmit* data){
 	//WHAT THE FUCK!!!
 	////result,timeused,memused,resdata,score,accepted,time,compmsg,pid
@@ -150,7 +171,7 @@ void Judge(MYSQL_ROW rq)
 	char Exe[TinyBuf], InputFileBase[TinyBuf], OutputFileBase[TinyBuf], Cmd[TinyBuf];
 	int PtNum;
 	Util::Db Db2;
-	sprintf(Cmd, "SELECT dataset,mlim,tlim FROM oj_problem WHERE id=%s", rq[1]);
+	sprintf(Cmd, "SELECT dataset,mlim,tlim,spj FROM oj_problem WHERE id=%s", rq[1]);
 	MYSQL_ROW prob = Db2.Find(Cmd);
 	if(NULL == prob){
 		Db2.Release();
@@ -160,6 +181,7 @@ void Judge(MYSQL_ROW rq)
 		return;
 	}
 	PtNum = atoi(prob[0]);
+    bool SPJ = (bool)(atoi(prob[3]));
 	int MemLim = atoi(prob[1]), TimeLim = atoi(prob[2]), PtScore = ceil(100.0 / PtNum);
 	//LOAD CONFIGURATIONS
 	sprintf(Exe, "%s%s/conf.ini", ProblemPath, rq[1]);
@@ -229,10 +251,14 @@ void Judge(MYSQL_ROW rq)
 			sprintf(AnsPath, "%s%s/%s%d.out", ProblemPath, rq[1], OutputFileBase, i);
 		if(!FileExists(AnsPath))
 			break;
-		if(!ThisPtSpec && Compare(AnsPath)){
+		if(!ThisPtSpec && !SPJ && Compare(AnsPath)){
 			sprintf(__result2, "%s %d\n", __result, PtScore);
 			task.Score += PtScore;
 		}
+        else if(!ThisPtSpec && SPJ && SpecialJudge(i, ProblemPath)){
+			sprintf(__result2, "%s %d\n", __result, PtScore);
+			task.Score += PtScore;
+        }
 		else if(!ThisPtSpec){
 			int _a, _b, _c;
 			sscanf(__result, "%d%d%d", &_a, &_b, &_c);
