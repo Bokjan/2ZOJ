@@ -251,6 +251,8 @@ void Judge(MYSQL_ROW rq)
 			sprintf(AnsPath, "%s%s/%s%d.out", ProblemPath, rq[1], OutputFileBase, i);
 		if(!FileExists(AnsPath))
 			break;
+		char SPJProblemPath[TinyBuf];
+		sprintf(SPJProblemPath, "%s%s/", ProblemPath, rq[1]);
 		if(!ThisPtSpec && !SPJ && Compare(AnsPath)){
 			sprintf(__result2, "%s %d\n", __result, PtScore);
 			task.Score += PtScore;
