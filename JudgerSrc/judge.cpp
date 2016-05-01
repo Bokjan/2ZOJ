@@ -101,7 +101,7 @@ bool Compare(char *Ans)
 	fclose(o);
 	return true;
 }
-bool SpecialJudge(int point, char *probpath)
+bool SpecialJudge(int point, const char *probpath)
 {
     char cmd[10240], result[TinyBuf];
     char Out[TinyBuf], spjer[TinyBuf];
