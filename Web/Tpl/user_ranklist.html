@@ -1,5 +1,7 @@
 <?php
 require 'head.php';
+ini_set("display_errors", "On");
+error_reporting(E_ALL | E_STRICT);
 ?>
 <script type="text/javascript">
 var page=<?=$page;?>;
@@ -21,27 +23,32 @@ function next()
 				<div class="span10 offset1">
 						<table class="table table-striped table-bordered table-hover">
 							<thead><tr>
-								<th>Position</th>
+								<th>Rank</th>
 								<th>ID</th>
 								<th>Name</th>
 								<th>Nickname</th>
-								<th>Accepted</th>
-								<th>Submitted</th>
+								<th>AC</th>
+								<th>Sub.</th>
 								<th>Ratio</th>
+								<th>Points</th>
 							</tr></thead>
 							<tbody>
 								<?php
 									foreach($res as $item)
 									{
+										$ratio = 0;
+										if($item['submit'] != 0) {
+											$ratio = intval($item['accept']/$item['submit']*100);
+										}
 										echo '<tr>';
 										echo '<td>',$i++,'</td>';
 										echo '<td>',$item['id'],'</td>';
-										//echo '<td>',$item['name'],'</td>';
 										echo '<td><a target="_blank" href="',U("user/detail?uid={$item['id']}"),'">',$item['name'],'</a></td>';
-										echo '<td>',$item['nick'],'</td>';
+										echo '<td>',strip_tags($item['nick']),'</td>';
 										echo '<td>',$item['accept'],'</td>';
 										echo '<td>',$item['submit'],'</td>';
-										echo '<td>',intval($item['accept']/$item['submit']*100),'%</td>';
+										echo '<td>',$ratio,'%</td>';
+										echo '<td>',$item['points'],'</td>';
 										echo '</tr>';
 									}
 								?>

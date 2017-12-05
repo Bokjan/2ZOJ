@@ -46,7 +46,7 @@ class UserController extends Controller
 			$page=$_GET['page'];
 		else
 			$page=1;
-		defined('REC_PER_PAGE') or define('REC_PER_PAGE', 15);
+		defined('REC_PER_PAGE') or define('REC_PER_PAGE', 16);  // 修改ranklist每页列出记录条数15->16。
 		$db=new epdb('user');
 		$maxpage=intval(($db->where('1 = 1')->count() + REC_PER_PAGE - 1) / REC_PER_PAGE);
 		$this->set('maxpage', $maxpage);
@@ -55,7 +55,8 @@ class UserController extends Controller
 		$this->set('page', $page);
 		$tmp=(($page-1)*REC_PER_PAGE);
 		$limit='LIMIT '.$tmp.','.REC_PER_PAGE;
-		$sql="SELECT id, name, nick, accept, submit, jointime, mail FROM oj_user ORDER BY accept DESC {$limit}";
+		// $sql="SELECT id, name, nick, accept, submit, jointime, mail FROM oj_user ORDER BY accept DESC {$limit}";
+		$sql="SELECT id, name, nick, accept, submit, points FROM oj_user ORDER BY points DESC {$limit}";
 		$res=$db->execute($sql)->fetch_all(MYSQLI_ASSOC);
 		$this->set('res', $res);
 		$this->set('title',"Ranklist Page {$page}");
@@ -112,7 +113,7 @@ class UserController extends Controller
 			die('Invalid User ID!');
 		$db = new epdb('user');
 		$res = $db->where('id='.$_GET['uid'])->find();
-		$this->set('title', "{$res->name}'s Information");
+		$this->set('title', "{$res->name}'s Profile");
 		$this->set('res', $res);
 		$this->display();
 	}

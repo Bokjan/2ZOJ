@@ -2,7 +2,7 @@
 class IndexController extends Controller{
 	function index(){
 		//$this->success('OK');
-		$this->set('title', 'Welcome to 2ZOJ');
+		$this->set('title', 'Welcome to CJOJ');
 		$this->display();
 	}
 	function about()

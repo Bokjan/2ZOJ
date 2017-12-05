@@ -58,31 +58,31 @@
               <div class="control-group" id="userid_ctl">
                 <label class="control-label">Real Name</label>
                 <div class="controls">
-                  <input placeholder="Real Name or Rejected" class="input-xlarge" type="text" name="name" id="input_name">
+                  <input placeholder="Real name" class="input-xlarge" type="text" name="name" id="input_name">
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label" for="input_nick">Nick Name</label>
                 <div class="controls">
-                  <input placeholder="Nick Name can be Duplicated" class="input-xlarge" type="text" name="nick" id="input_nick">
+                  <input placeholder="Or your signature" class="input-xlarge" type="text" name="nick" id="input_nick">
                 </div>
               </div>
               <div class="control-group" id="newpwd_ctl">
                 <label class="control-label" for="input_password">Password</label>
                 <div class="controls">
-                  <input placeholder="A Safe Password" class="input-xlarge" type="password" id="input_password" name="password">
+                  <input placeholder="A safe password" class="input-xlarge" type="password" id="input_password" name="password">
                 </div>
               </div>
               <div class="control-group" id="reppwd_ctl">
                 <label class="control-label" for="input_reppwd">Repeat Password</label>
                 <div class="controls">
-                  <input placeholder="Ensure It's the Same" class="input-xlarge" type="password" id="input_reppwd">
+                  <input placeholder="Double check" class="input-xlarge" type="password" id="input_reppwd">
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label" for="input_email">E-Mail</label>
+                <label class="control-label" for="input_email">E-mail</label>
                 <div class="controls">
-                  <input placeholder="Each E-Mail can be Used Once" class="input-xlarge" type="text" name="mail" id="input_mail">
+                  <input placeholder="name@example.com" class="input-xlarge" type="text" name="mail" id="input_mail">
                 </div>
               </div>
 			  <div class="control-group">
@@ -90,7 +90,7 @@
                 <div class="controls">
                   <select name="school" id="input_school">
 				  <?php
-				  $schoolList=array('株洲二中', '株洲南方', '株洲八中', '株洲九方', '醴陵一中');
+				  $schoolList=array('长郡中学', '长郡双语','麓山国际','长郡滨江','长郡梅溪湖','长郡郡维','湘郡培粹','株洲二中');
 				  $year=date('Y');
 				  foreach($schoolList as $item)
 				  {
@@ -101,6 +101,7 @@
 					  }
 				  }
 				  ?>
+            <option selected="selected">其他</option>
 				  </select>
                 </div>
               </div>
@@ -117,13 +118,14 @@
 
       <hr>
       <footer>
-      <p> <a href="news/Notice.html" style="color:#F00;font:微软雅黑;font-size:20px">株洲市二中2015届新高一信息学奥赛兴趣小组“招兵买马”通知</a></p>
-        <p>Copyright &copy; 2014 - <?=date('Y')?> No.2 High School of Zhuzhou, Hunan 湘ICP备14008535号</p>
+    <!--  <p> <a href="news/Notice.html" style="color:#F00;font:微软雅黑;font-size:20px">株洲市二中2015届新高一信息学奥赛兴趣小组“招兵买马”通知</a></p> -->
+        <p>Copyright &copy; 2014 - <?=date('Y')?> Changjun High School of Changsha, Hunan 湘ICP备05007487号</p>
       </footer>
     </div>
     <script src="Tpl/assets/js/jquery.js"></script>
     <script src="Tpl/assets/js/common.js"></script>
     <script type="text/javascript">
+	alert("评测数据调整中，请暂时不要提交P2000以后的题目。");
       function switch_page() {
         $('#loginpage').hide();
         $('h1').html('Application Form');

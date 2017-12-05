@@ -1,4 +1,7 @@
 <?php
+ // ini_set("display_errors", "On");
+ // error_reporting(E_ALL | E_STRICT);
+
 class ProblemController extends Controller
 {
 	public function detail()
@@ -17,16 +20,18 @@ class ProblemController extends Controller
 		$db->table('submit');
 		global $user;
 		$status;
-		$checker = $db->where("pid={$pid} AND uid={$user->id} AND result='AC'")->limit('1')->find();
+		$checker = $db->where("pid={$pid} AND uid={$user->id} AND accepted=1")->limit('1')->find();
+		/*20170214 - Tags present Update */
+		$ac=$db->where("pid={$pid} AND uid={$user->id} AND score >=60 ")->limit('1')->find();
 		if($checker != null)
 			$status='<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> Congratulations!</td></tr>';
-		if($status[0] != '<')
+		if(empty($status))
 		{
 			$checker = $db->where("pid={$pid} AND uid={$user->id}")->limit('1')->find();
 			if($checker != null)
 				$status='<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> Try Again!</td></tr>';
 		}
-		if($status[0] != '<')
+		if(empty($status))
 			$status = '<tr><td colspan="2" class="center muted" >Haven\'t submitted yet.</td></tr>';
 		/*20150226 - Tags*/
 		$db->table('tag');
@@ -52,17 +57,21 @@ class ProblemController extends Controller
 		$this->set('taglist', $db/*->order('id ASC')*/->getField('id,name'));
 		/*End Tag*/
 		/*****************/
+		$this->set('ac', $ac);
 		$this->set('status', $status);
 		$this->set('title', "P{$res->id} - {$res->title}");
 		$this->display();
 	}
 	public function submit()
 	{
+		if(!isset($_POST['problem']) || !is_numeric($_POST['problem'])) {
+			$this->error('Invalid Request');
+		}
 		global $user;
 		if($user->admin < 0)
 		{
-			//$this->error("Application has not been approved. \n 注册信息尚未通过审核。");
-			die("Application has not been approved. \n 注册信息尚未通过审核。");
+			$this->error("Application has not been approved. \n 注册信息尚未通过审核。");
+			// die("Application has not been approved. \n 注册信息尚未通过审核。");
 		}
 		if($_POST['method']!='submit')
 			$this->error('INVALID REQUEST');
@@ -70,15 +79,22 @@ class ProblemController extends Controller
 			echo 'Problem configuration file does not exist.';
 			exit;
 		}
+		$db=new epdb('submit');
+		$query = sprintf("SELECT `time` FROM oj_submit WHERE uid=%d ORDER BY id DESC LIMIT 1", $user->id);
+		$dup_check = $db->execute($query)->fetch_all(MYSQLI_ASSOC);
+		if($dup_check != null && TIME - $dup_check[0]['time'] < 10) { // 10秒内不准重复提交
+			// echo $dup_check[0]['time'] - TIME;
+			$this->error('You can only submit one solution in every 10 seconds.');
+		}
 		$data=array();
-		if($_POST['public']=='on')
+		if(isset($_POST['public']) && $_POST['public']=='on')
 			$data['open']='1';
 		$data['uid']=$user->id;
 		$data['pid']=$_POST['problem'];
 		$data['lang']=addslashes($_POST['language']);
 		$data['time']=TIME;
-		$db=new epdb('submit');
 		$db->data($data)->add();
+		// var_dump($db->lastSql);
 		$res=$db->where("uid={$user->id} AND time=".TIME)->getField('id');
 		file_put_contents(C('JUDGER_PATH')."src/{$res[0]['id']}.{$_POST['language']}", $_POST['source']);
 		$db->execute("UPDATE oj_user SET submit=submit+1 WHERE id={$user->id}");
@@ -143,7 +159,8 @@ class ProblemController extends Controller
 					oj_problem.accept,
 					oj_problem.submit,
 					oj_problem.difficulty,
-					TmpTable.accepted,
+					TmpTable1.accepted as ac,
+					TmpTable2.accepted as noac,
 					oj_marked.id AS isMarked
 				FROM
 					oj_problem
@@ -151,17 +168,29 @@ class ProblemController extends Controller
 					(
 						SELECT
 							oj_submit.accepted,
-							oj_submit.uid,
 							oj_submit.pid
 						FROM
 							oj_submit
 						WHERE
 							oj_submit.uid = {$user->id}
-						ORDER BY
-							oj_submit.accepted DESC
-					) AS TmpTable
+							AND oj_submit.accepted=1
+					) AS TmpTable1
 				) ON (
-					TmpTable.pid = oj_problem.id
+					TmpTable1.pid = oj_problem.id
+				)
+				LEFT JOIN (
+					(
+						SELECT
+							oj_submit.accepted,
+							oj_submit.pid
+						FROM
+							oj_submit
+						WHERE
+							oj_submit.uid = {$user->id}
+							AND oj_submit.accepted=0
+					) AS TmpTable2
+				) ON (
+					TmpTable2.pid = oj_problem.id
 				)
 				LEFT JOIN oj_marked ON oj_marked.pid = oj_problem.id
 				AND oj_marked.uid = {$user->id}
@@ -182,7 +211,8 @@ class ProblemController extends Controller
 					oj_problem.accept,
 					oj_problem.submit,
 					oj_problem.difficulty,
-					TmpTable.accepted,
+					TmpTable1.accepted as ac,
+					TmpTable2.accepted as noac,
 					oj_marked.id AS isMarked
 				FROM
 					oj_problem
@@ -190,21 +220,33 @@ class ProblemController extends Controller
 					(
 						SELECT
 							oj_submit.accepted,
-							oj_submit.uid,
 							oj_submit.pid
 						FROM
 							oj_submit
 						WHERE
 							oj_submit.uid = {$user->id}
-						ORDER BY
-							oj_submit.accepted DESC
-					) AS TmpTable
+							AND oj_submit.accepted=1
+					) AS TmpTable1
 				) ON (
-					TmpTable.pid = oj_problem.id
+					TmpTable1.pid = oj_problem.id
+				)
+				LEFT JOIN (
+					(
+						SELECT
+							oj_submit.accepted,
+							oj_submit.pid
+						FROM
+							oj_submit
+						WHERE
+							oj_submit.uid = {$user->id}
+							AND oj_submit.accepted=0
+					) AS TmpTable2
+				) ON (
+					TmpTable2.pid = oj_problem.id
 				)
 				LEFT JOIN oj_marked ON oj_marked.pid = oj_problem.id
 				AND oj_marked.uid = {$user->id}
-				WHERE oj_problem.tags LIKE '%{$_GET['cat']}%,'
+				WHERE oj_problem.tags LIKE '{$_GET['cat']},%' or  oj_problem.tags LIKE '%,{$_GET['cat']},%' 
 				GROUP BY
 					oj_problem.id
 				ORDER BY
@@ -214,7 +256,7 @@ class ProblemController extends Controller
 			$pset = $db->execute($query)->fetch_all(MYSQLI_ASSOC);
 		}
 		$this->set('pset', $pset);
-		$this->set('title', 'Problemset Page '.$page);
+		$this->set('title', 'Problem Page '.$page);
 		
 		/*Tag*/
 		$db->table('tag');
@@ -247,7 +289,8 @@ class ProblemController extends Controller
 					oj_problem.accept,
 					oj_problem.submit,
 					oj_problem.difficulty,
-					TmpTable.accepted,
+					TmpTable1.accepted as ac,
+					TmpTable2.accepted as noac,
 					oj_marked.id AS isMarked
 				FROM
 					oj_problem
@@ -255,17 +298,29 @@ class ProblemController extends Controller
 					(
 						SELECT
 							oj_submit.accepted,
-							oj_submit.uid,
 							oj_submit.pid
 						FROM
 							oj_submit
 						WHERE
 							oj_submit.uid = {$user->id}
-						ORDER BY
-							oj_submit.accepted DESC
-					) AS TmpTable
+							AND oj_submit.accepted=1
+					) AS TmpTable1
 				) ON (
-					TmpTable.pid = oj_problem.id
+					TmpTable1.pid = oj_problem.id
+				)
+				LEFT JOIN (
+					(
+						SELECT
+							oj_submit.accepted,
+							oj_submit.pid
+						FROM
+							oj_submit
+						WHERE
+							oj_submit.uid = {$user->id}
+							AND oj_submit.accepted=0
+					) AS TmpTable2
+				) ON (
+					TmpTable2.pid = oj_problem.id
 				)
 				LEFT JOIN oj_marked ON oj_marked.pid = oj_problem.id
 				AND oj_marked.uid = {$user->id}
@@ -362,6 +417,7 @@ class ProblemController extends Controller
 			$data['jointime']=time();
 			$db->data($data)->add();
 		}
+		// echo $db->lastSql;
 		echo 'ok';
 	}
 	public function edittags()

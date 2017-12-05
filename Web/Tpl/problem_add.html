@@ -23,8 +23,10 @@ function save()
 		},function(data,status){
 			if(data=="ok")
 				alert("Success!");
-			else
+			else {
+				console.log(data);
 				alert(data);
+			}
 	});
 }
 </script>
@@ -35,7 +37,7 @@ function save()
 						<h2>务必注意使用MarkDown语法编写！</h2>
 					</div>
 					<div class="center problem-title">
-						<input type="text" id="title" value="<?=$pdata->title;?>" style="height:30px;">
+						<input type="text" id="title" value="<?=isset($pdata->title)?$pdata->title:'';?>" style="height:30px;">
 					</div>
 					<div class="row-fluid">
 						<div class="span12">

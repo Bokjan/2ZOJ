@@ -1,5 +1,7 @@
 <?php
 require 'head.php';
+// ini_set("display_errors", "On");
+// error_reporting(E_ALL | E_STRICT);
 ?>
 <div class="row-fluid">
 	<div class="span4 offset2">
@@ -9,7 +11,7 @@ require 'head.php';
 			<tr><td>Time</td><td><?=date('m/d/Y H:i:s', $data->time);?></td></tr>
 			<tr><td>Result</td><td><?=$resultHtml;?></td></tr>
 			<tr><td>Problem</td><td><a href="<?=U('problem/detail?pid='.$data->pid);?>" target="_blank">P<?php echo $data->pid,' ',$problem['title'];?></a></td></tr>
-			<tr><td>Language</td><td><?php if($data->lang=='cpp') echo 'C++11';elseif($data->lang=='c') echo 'C99';else echo 'Pascal';?></td></tr>
+			<tr><td>Language</td><td><?php if($data->lang=='cpp') echo 'C++11';elseif($data->lang=='c') echo 'C11';else echo 'Pascal';?></td></tr>
 			<tr><td>Time Usage</td><td><?=$data->timeused;?> ms</td></tr>
 			<tr><td>Memory Usage</td><td><?=$data->memused;?> KB</td></tr>
 			<tr><td>Difficulty of Problem</td><td><?=$problem['difficulty'];?></td></tr>
@@ -22,8 +24,10 @@ require 'head.php';
 		<h3>Test Cases 
 			<?php
 				global $user;
-				if($data->result!='AC' && $data->uid==$user->id)
-					echo '<a href="',U('solution/testdata?id='.$data->id),'" target="_blank">DOWNLOAD DATA</a>';
+				if($data->result!='AC' && $data->uid==$user->id) {
+					echo '<a href="',U('solution/testdata?t=in&id='.$data->id),'" target="_blank">Input</a>  ';
+					echo '<a href="',U('solution/testdata?t=ans&id='.$data->id),'" target="_blank">Answer</a>';
+				}
 			?>
 		</h3>
 		<table class="table table-hover table-bordered" style="font-size:smaller; align:left">
@@ -39,24 +43,22 @@ require 'head.php';
 					{
 						echo "<td>{$item}</td>";
 					}
-					echo '</tr>';
+					echo "<tr>\n";
 				}
 			?>
 		</table>
 	</div>
 </div>
 <?php
-if(!empty($data->compmsg)): ?>
+// var_dump($data->compmsg);
+if(!empty($data->compmsg)): 
+	?>
 <div class="row-fluid">
 	<div class="offset2 span8">
 		<h3>Compiler Message</h3>
-		<blockquote id="compmsg"><?php
-			$msgset=explode("\n", htmlspecialchars($data->compmsg));
-			foreach ($msgset as $item)
-			{
-				echo $item,'<br>';
-			}
-			?></blockquote>
+		<pre id="compmsg"><?php
+			echo $data->compmsg;
+			?></pre>
 	</div>
 </div>
 <?php endif;
@@ -83,8 +85,17 @@ if($data->uid==$user->id || $data->open || $user->admin >= 1):
 				<button type="submit" name="option" class="btn btn-danger" value="1">Make It Public</button>
 		<?php
 			}
-		 }?>
-		</form>
+		}
+		if($user->admin > 1 || $data->uid==$user->id) {?>
+			</form>
+			<form action="<?=U('solution/rejudge');?>" method="post">
+				<input type="hidden" name="id" value="<?=$data->id;?>">
+				<button type="submit" name="option" class="btn btn-warning">Rejudge</button>
+			</form>
+			<?php
+		}
+		 ?>
+		
 		<pre class="prettyprint linenums lang-cpp"><?php echo htmlspecialchars(file_get_contents(C('JUDGER_PATH').'src/'.$data->id.'.'.$data->lang)); ?></pre>
 	</div>
 	<script type="text/javascript">

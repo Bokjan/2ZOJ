@@ -1,0 +1,39 @@
+<?php
+require 'head.php';
+?>
+<div class="row-fluid">
+	<div class="span10 offset1"><table class="table table-striped table-bordered">
+			<thead><tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Problemset</th>
+                <th>Start at</th>
+                <th>End at</th>
+                <th>Ranking</th>
+            </tr></thead>
+            <tbody>
+                <?php
+                  foreach($res as $item)
+                  {
+		              echo "<tr style=\" height: 40px;\" >";
+		              echo '<td>',$item['id'],'</td>';
+		              echo '<td>',$item['title'],'</td>';
+					  $problems = explode(',', $item['problems']);
+		              echo '<td>';
+					  foreach($problems as $proID){
+						echo "<a href=\"/problem/detail/pid/{$proID}\" target=\"_blank\">P{$proID}</a> &nbsp;&nbsp;";
+					  }
+					  echo '</td>';
+					  $t = sprintf('%04d', $item['id']);
+		              echo '<td>',date('m/d/Y H:i', $item['start']),'</td>';
+		              echo '<td>',date('m/d/Y H:i', $item['end']),'</td>';
+						  echo "<td><a href=\"".U('task/result?tid='.$item['id'])."\" target=\"_blank\">Check</a></td>";
+		              echo "</tr>\n";
+                  }
+                ?>
+              </tbody>
+		</table>
+	</div>
+</div>
+<?php
+require 'foot.php';

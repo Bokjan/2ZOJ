@@ -2,7 +2,7 @@
 class ContestController extends Controller{
 	function overview(){
 		$db = new epdb('contest');
-		$this->set('res', $db->execute("SELECT * FROM oj_contest ORDER BY id DESC LIMIT 10;")->fetch_all(MYSQLI_ASSOC));
+		$this->set('res', $db->execute("SELECT * FROM oj_contest ORDER BY id DESC LIMIT 11;")->fetch_all(MYSQLI_ASSOC));
 		$this->set('title', 'Contests Overview');
 		$this->display();
 	}

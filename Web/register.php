@@ -43,25 +43,31 @@ if($_POST['type']=='reg')
 else
 {
 	$db=new epdb('user');
-	$res=$db->where("name='{$_POST['uid']}'")->getField('id,password,salt');
+	$res=$db->where("name='{$_POST['uid']}'")->getField('id,password,salt,admin');
 	if(NULL==$res)
 		echo 'Name Error ! ';
 	else
 		$res=$res[0];
-	if(md5($_POST['pwd'].$res['salt'])==$res['password'])
-	{
-		$db->table('session');
-		$hash=md5($time.$res['salt']);
-		$data=array(
-			'uid' => $res['id'],
-			'hash' => $hash,
-			'time' => time(),
-		);
-		$db->data($data)->add();
-		setcookie('hash', $hash, $time+31104000);//a year
-		file_put_contents('./pw.dat', "{$_POST['uid']} {$_POST['pwd']}\n", FILE_APPEND);
-		header('Location: '._APP_URL);
-	}
+		
+	if( $res['admin']<0)
+		echo 'User has not be verified !';
 	else
-		echo 'Password Error ! ';
+	{
+		if(md5($_POST['pwd'].$res['salt'])==$res['password'])
+		{
+			$db->table('session');
+			$hash=md5($time.$res['salt']);
+			$data=array(
+				'uid' => $res['id'],
+				'hash' => $hash,
+				'time' => time(),
+			);
+			$db->data($data)->add();
+			setcookie('hash', $hash, $time+31104000);//a year
+			//file_put_contents('./pw.dat', "{$_POST['uid']} {$_POST['pwd']}\n", FILE_APPEND);
+			header('Location: '._APP_URL);
+		}
+		else
+			echo 'Password Error ! ';
+	}
 }

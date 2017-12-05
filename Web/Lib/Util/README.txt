@@ -1,3 +1,8 @@
+===========================
+Parsedown.class.php
+第880行已魔改
+
+
 IpLocation.class.php需要搭配数据文件使用
 下载：
 http://pan.baidu.com/s/1vNt32

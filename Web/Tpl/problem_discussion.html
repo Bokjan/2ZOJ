@@ -48,7 +48,7 @@ function post()
 				echo '<tr><td style="text-align:left;">';
 				echo '<strong>',$item['name'],'</strong>',' posted on <em>',date('m/d/Y H:i', $item['time']),'</em><br>';
 				echo '<span class="label"><a target="_blank" style="color:#FFF;" href="',U('solution/record?pid='.$_GET['pid'].'&name='.$item['name']),'">View his/her solution(s)</a></span>';
-				echo '<br><div id="md">',$item['text'],'</div>';
+				echo '<br><pre <!--id="md-->">',$item['text'],'</pre>';
 				echo '</td></tr>';
 			}
 			?>

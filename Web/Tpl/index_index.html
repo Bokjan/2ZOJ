@@ -1,17 +1,43 @@
 <?php
 require 'head.php';
 ?>
+<style type="text/css">
+.vmsg-rl {
+	-webkit-writing-mode: vertical-rl;
+	writing-mode: vertical-rl;
+	font-size:26px; 
+	color:#ce1430;
+}
+.vmsg-lr {
+	-webkit-writing-mode: vertical-lr;
+	writing-mode: vertical-lr;
+	font-size:26px; 
+	color:#ce1430;
+}
+</style>
 <div class="row-fluid">
-        <div class="span10 offset1">
+		<div class="span1 vmsg-rl"><a href="/update.php" target="_blank">评测机已更换</a>，内存占用多于以前属准确现象</div>
+        <div class="span10">
           <div id="newspad" class="well" style="font-size:16px;padding:19px 40px; background-color: #FFF">
-            <!--<div id="title" style="text-align:center; font-size:24px;cursor: pointer;">
-                <h1 style="padding-bottom: 10px;">Welcome to OnlineJudge</h1>
-            </div>-->
-		<div style="text-align:center;">
-			<img src="<?=C('APP_URL');?>Tpl/assets/img/lks.png" />
-		</div>
+            
+			<div id="title" style="text-align:center; font-size:24px;cursor: pointer;">
+<!--            <h1 style="padding-bottom: 10px; font-size:28px;" > 知识是基石，技巧是利器，思维是王者 — 拒绝套路僵化 ! <br/> 贵在恒，非一时兴起，三更眠，五更起 ; 人生没有白走的路,每一步都算数 ! </h1>  
+				
+				<h1 style="padding-bottom: 8px; font-size:26px; color:red;" > 新学年 , 从"心"出发 , 攀登新的高度 ! ——> 树立目标，明确方向，自信拼搏，朴实沉毅 ! </h1>
+				<h2 style="padding-bottom: 8px; font-size:26px; " >	 NOIP2017->WC->HNOI->CTSC/APIO->THU/PKUSC->NOI2018 —— 人生没有白走的路,每一步都算数 !
+				</h2>       -->
+		<!--		<h1 style="padding-bottom: 8px; font-size:26px; color:#009966;" > 接受我们不能改变的一切，改变我们能改变的一切 ! </h1>  
+				<h2 style="padding-bottom: 8px; font-size:26px; color:#FF0033;" >	总结成功的经验能让人越来越聪明，总结失败的原因能让人越来越谨慎，You can find The best of yourself !</h2> -->
+				<h2 style="padding-bottom: 8px; font-size:26px; color:#009966;" >	NOIP2017 , We are ready !</h2>
+            </div>
+			
+			<div style="text-align:center;">
+				<img src="<?=C('APP_URL');?>Tpl/assets/img/cj2017.png" />
+			</div>
+			
           </div>
         </div>
+        <div class="span1 vmsg-lr">评测详情页已支持分输入输出下载及自助重评</div>
       </div>
       <!--<div class="row-fluid">
         <div id="chart" class="span12" style="height: 400px; margin: 0 auto"></div>

@@ -1,4 +1,6 @@
 <?php
+// ini_set("display_errors", "On");
+// error_reporting(E_ALL | E_STRICT);
 class SolutionController extends Controller
 {
 	public function source()
@@ -21,6 +23,8 @@ class SolutionController extends Controller
 			'JE' => '<span class="label label-inverse">Judger Error</span>',
 			'WA' => '<span class="label label-important">Wrong Answer</span>',
 			'u' => '<span class="label">Waiting</span>',
+			'r' => '<span class="label">Running</span>',
+			'v' => '<span class="label">Waiting(R)</span>',
 		);
 		$resultHtml=$map[$res->result];
 		$uid=$res->uid;
@@ -49,7 +53,7 @@ class SolutionController extends Controller
 			$pid=$_GET['pid'];
 		if(isset($_GET['name']))
 			$suser=urldecode($_GET['name']);
-		defined('REC_PER_PAGE') or define('REC_PER_PAGE', 15);
+		defined('REC_PER_PAGE') or define('REC_PER_PAGE', 16);   // 修改record每页列出记录条数15->16。
 		$db=new epdb('submit');
 		$maxpage=intval(($db->where('1 = 1')->count() + REC_PER_PAGE - 1) / REC_PER_PAGE);
 		$this->set('maxpage', $maxpage);
@@ -63,7 +67,9 @@ class SolutionController extends Controller
 			'MLE' => '<span class="label label-warning">Memory Limit Exceeded</span>',
 			'JE' => '<span class="label label-inverse">Judger Error</span>',
 			'WA' => '<span class="label label-important">Wrong Answer</span>',
-			'u' => '<span class="label">Waiting</span>',
+            'u' => '<span class="label">Waiting</span>',
+            'r' => '<span class="label">Running</span>',
+            'v' => '<span class="label">Waiting(R)</span>',
 		);
 		$sql="SELECT oj_user.name, oj_problem.title, oj_submit.id, oj_submit.pid, oj_submit.uid, oj_submit.lang, oj_submit.result, oj_submit.score, oj_submit.timeused, oj_submit.memused, oj_submit.open, oj_submit.time FROM oj_submit LEFT JOIN (oj_user,oj_problem) ON (oj_user.id=uid AND oj_problem.id=pid) WHERE 1 = 1";
 		if(!empty($pid))
@@ -85,7 +91,7 @@ class SolutionController extends Controller
 			if($res[$i]['lang']=='cpp')
 				$res[$i]['lang']='C++11';
 			elseif($res[$i]['lang'] == 'c')
-				$res[$i]['lang']='C99';
+				$res[$i]['lang']='C11';
 			elseif($res[$i]['lang'] == 'pas')
 				$res[$i]['lang'] = 'Pascal';
 		}
@@ -141,6 +147,9 @@ class SolutionController extends Controller
 			$this->error('INVALID REQUEST');
 		else
 			$id=$_GET['id'];
+		if(!isset($_GET['t']))
+			$this->error('INVALID REQUEST');
+		$t = $_GET['t'];
 		global $user;
 		$db=new epdb('submit');
 		$ch=$db->where('id='.$id)->find();
@@ -150,6 +159,23 @@ class SolutionController extends Controller
 			$this->error('INVALID ACTION ACCESS');
 		if($ch->result=='AC')
 			$this->error('NO DATA CAN BE DOWNLOADED');
+
+		// check task
+		$task_select = $db->execute('SELECT `start`,`end` FROM oj_task WHERE problems LIKE \'%'.$ch->pid.'%\';')->fetch_all(MYSQLI_ASSOC);
+		if(count($task_select) > 0) {
+			$now = time();
+			foreach($task_select as $item) {
+				// var_dump($item);
+				if($now >= (int)$item['start'] && $now <= (int)$item['end']) {
+					// $this->error('Cannot download: a task related to this problem is running');
+					echo 'Cannot download: a task related to this problem is running';
+					die();
+				}
+			}
+		}
+		// die();
+		// end check task
+
 		$resdata=explode("\n", $ch->resdata);
 		$count=count($resdata);
 		$i;
@@ -167,12 +193,46 @@ class SolutionController extends Controller
 		if(count($ioprefix) == 0)
 			$this->error('NO DATA CAN BE DOWNLOADED');
 		header('Content-type: text/plain; charset=utf-8');
-		header("Content-Disposition: attachment; filename=data{$i}.txt");
-		echo $ioprefix[0],$i,'.in';
-		echo "\n==========\n";
-		@readfile($datapath.$ioprefix[0].$i.'.in');
-		echo "\n",$ioprefix[0],$i,'.ans';
-		echo "\n==========\n";
-		@readfile($datapath.$ioprefix[0].$i.'.ans');
+		// echo $ioprefix[0],$i,'.in';
+		// echo "\n==========\n";
+		if($t == 'in') {
+			header("Content-Disposition: attachment; filename=data{$i}.in");
+			@readfile($datapath.$ioprefix[0].$i.'.in');
+			return; // under answer circumstance, continue
+		}
+		header("Content-Disposition: attachment; filename=data{$i}.ans");
+	//	if(file_exists(sprintf("%s%s%d.ans", $probDir, $outPrefix, $i)))
+		if(file_exists($datapath.$ioprefix[0].$i.'.ans'))
+		{
+			// echo "\n",$ioprefix[0],$i,'.ans';
+			// echo "\n==========\n";
+			@readfile($datapath.$ioprefix[0].$i.'.ans');
+		}
+		else
+		{
+			// echo "\n",$ioprefix[0],$i,'.out';
+			// echo "\n==========\n";
+			@readfile($datapath.$ioprefix[0].$i.'.out');
+		}
+	// 	echo 'ok';
+	}
+	public function rejudge() {
+		global $user;
+		if(!isset($_POST['id']) || !is_numeric($_POST['id'])) {
+			$this->error('INVALID REQUEST');
+		}
+		$db=new epdb('submit');
+		if($user->admin <= 1) {
+			$ch = $db->where("id={$_POST['id']}")->getField('uid');
+			if($user->id != $ch[0]['uid']) {
+				$this->error('PERMISSION DENIED');
+			}
+		}
+		$ch = $db->where("id={$_POST['id']}")->getField('uid');
+		$data=array(
+			'result'=>'v',
+		);
+		$db->where("id={$_POST['id']}")->data($data)->save();
+		header('Location: '.U("solution/source?id={$_POST['id']}"));
 	}
 }

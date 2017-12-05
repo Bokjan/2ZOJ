@@ -11,8 +11,8 @@
 class epdb{
 	private $dbhost='localhost'; //YOUR DATABASE HOST, LOCALHOST FOR UNIX SOCKET
 	private $dbname='oj'; //YOUR DATABASE NAME
-	private $dbuser='admin'; //A USER ACCESS THE DB YOU INPUTED
-	private $dbpw='admin';   //THE ABOVE USER'S PASSWORD
+	private $dbuser='root'; //A USER ACCESS THE DB YOU INPUTED
+	private $dbpw='root';   //THE ABOVE USER'S PASSWORD
 	private $conn;	    //A PRIVATE PROPERTY, FOR CLASS TO SAVE A DB LINK
 	public  $prefix='oj_'; //LEAVE BLANK IF YOU DON'T NEED PREFIX
 	public  $lastSql;   //A PUBLIC PROPERTY, DEBUGGING

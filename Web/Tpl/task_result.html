@@ -1,0 +1,68 @@
+<?php
+require 'head.php';
+?>
+<div class="row-fluid">
+	<div class="span10 offset1"><table class="table table-bordered">
+			<thead><tr>
+				<th>Rank</th>
+				<th>Name</th>
+				<?php
+		$map=array(
+			'A' => ' bgcolor="#669533"',
+			'C' => ' bgcolor="#999"',
+			'R' => ' bgcolor="#178acc"',
+			'T' => ' bgcolor="#dd5600"',
+			'T' => ' bgcolor="#dd5600"',
+			'J' => ' bgcolor="#333"',
+			'W' => ' bgcolor="#bd4247"',
+			'u' => ' bgcolor="#999"',
+			'r' => ' bgcolor="#999"',
+			'v' => ' bgcolor="#999"',
+		);
+					foreach ($pids as $pid) {
+						echo '<th><a href="'.U('problem/detail?pid='.$pid).'" target="_blank">P'.$pid.'</a></th>';
+					}
+				?>
+				<th>Total</th>
+			</tr></thead>
+			<tbody>
+				<?php
+					$rank = 0;
+					$all = 1;
+					$last = 2147483647;
+				  foreach($people as $p)
+				  {
+					  echo '<tr>';
+					  // ranking logic
+					  if($p['total'] < $last) {
+						$last = $p['total'];
+						$rank = $all;
+					  }
+					  ++$all;
+					  echo '<td rowspan="2">'.$rank.'</td>';
+					  echo '<td rowspan="2"><a href="'.U('user/detail?uid='.$p['uid']).'" target="_blank">'.$p['name'].'</a></td>';
+					  for($i = 0; $i < count($pids); ++$i) {
+						if(!isset($p[$i])) {
+							echo '<td bgcolor="#f9f9f9">N/A</td>';
+							continue;
+						}
+						echo '<td ',$map[$p[$i]['r']{0}],' style="color:#fff">'.$p[$i]['r'].' '.$p[$i]['s'].'</td>';
+					  }
+					  echo '<td rowspan="2">'.$p['total'].'</td>';
+					  echo "</tr><tr>";
+					  for($i = 0; $i < count($pids); ++$i) {
+						if(!isset($p[$i])) {
+							echo '<td bgcolor="#f9f9f9">N/A</td>';
+							continue;
+						}
+						echo '<td ',$map[$p[$i]['first']{0}],' style="color:#fff">'.$p[$i]['first'].'</td>';
+					  }
+					  echo "</tr>";
+				  }
+				?>
+			  </tbody>
+		</table>
+	</div>
+</div>
+<?php
+require 'foot.php';

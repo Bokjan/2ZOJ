@@ -36,7 +36,9 @@ class Controller{
 	 *@param string $jumpUrl (非必须)跳转URL
 	 */
 	function error($message='',$jumpUrl=''){
-		$this->jump($message,$jumpUrl,0);
+		// $this->jump($message,$jumpUrl,0);
+		echo $message;
+		die();
 	}
 	/**
 	 *跳转

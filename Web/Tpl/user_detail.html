@@ -11,9 +11,10 @@ global $user;
 <tr><td>Nickname</td><td><?=$res->nick;?></td></tr>
 <tr><td>Group</td><td><?=$res->group;?></td></tr>
 <tr><td>E-mail</td><td><?=$res->mail;?></td></tr>
+<tr><td>Points</td><td><?=$res->points;?></td></tr>
 <tr><td>Accepted</td><td><?=$res->accept;?></td></tr>
-<tr><td>Submitted</td><td><?=$res->submit;?></td></tr>
-<tr><td>Reg Time</td><td><?=date('m/d/Y H:i:s', $res->jointime);?></td></tr>
+<tr><td>Submission</td><td><?=$res->submit;?></td></tr>
+<tr><td>Registered at</td><td><?=date('m/d/Y H:i:s', $res->jointime);?></td></tr>
 </tbody>
 </table>
 </div>

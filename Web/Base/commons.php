@@ -45,6 +45,7 @@ function U($string){
 	if($sepe==NULL){
 		$sepe='/';
 	}
+	$url='';
 	if(strstr($string, '?')){
 		$string=explode('?', $string);
 		$class=explode('/', $string[0]);

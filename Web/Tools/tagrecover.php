@@ -26,9 +26,10 @@ foreach($data as $item)
 	unset($newpids);
 	unset($newstring);
 }
-///*
+ 
+/*
 //重新恢复题目标签
-/*$db = new epdb('tag');
+$db = new epdb('tag');
 $tagdata = $db->getField('id,pid');
 foreach($tagdata as $tag)
 {
