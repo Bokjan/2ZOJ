@@ -1,0 +1,3 @@
+[submodule "JavaJudger/qdujudger"]
+	path = JavaJudger/qdujudger
+	url = https://github.com/QingdaoU/Judger
