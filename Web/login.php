@@ -118,14 +118,12 @@
 
       <hr>
       <footer>
-    <!--  <p> <a href="news/Notice.html" style="color:#F00;font:微软雅黑;font-size:20px">株洲市二中2015届新高一信息学奥赛兴趣小组“招兵买马”通知</a></p> -->
-        <p>Copyright &copy; 2014 - <?=date('Y')?> Changjun High School of Changsha, Hunan 湘ICP备05007487号</p>
+        <p>Copyright &copy; 2014 - <?=date('Y')?> Boyin Chen</p>
       </footer>
     </div>
     <script src="Tpl/assets/js/jquery.js"></script>
     <script src="Tpl/assets/js/common.js"></script>
     <script type="text/javascript">
-	alert("评测数据调整中，请暂时不要提交P2000以后的题目。");
       function switch_page() {
         $('#loginpage').hide();
         $('h1').html('Application Form');
