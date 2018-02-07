@@ -12,6 +12,8 @@ public class Config {
 		return inner.jniLibrary;
 	}
 
+	public static String judgerLibrary() { return inner.judgerLibrary; }
+
 	public static int mysqlPort() {
 		return inner.mysqlPort;
 	}
@@ -104,6 +106,8 @@ public class Config {
 	class InnerClass {
 		@SerializedName("jni_library")
 		String jniLibrary;
+		@SerializedName("judger_library")
+		String judgerLibrary;
 
 		@SerializedName("mysql_port")
 		int mysqlPort;

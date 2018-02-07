@@ -96,16 +96,15 @@ public class Judger {
 			sb.setInput(String.format("%s%d/%s%d.in", Config.problemPath(),
 					task.getProblemId(), cr.getInPrefix(), i));
 			Subtask st = this.runOnce(sb);
+			// accumulate mem and time usage
+			task.setTimeUsage(task.getTimeUsage() + st.getTimeUsage());
+			task.setMemoryUsage(task.getMemoryUsage() + st.getMemoryUsage() / 1024); // in KiB
 			if (st.getResult() != Task.Result.ACCEPTED) { // don't check the answer
 				st.setScore(0);
 				task.subtasks.add(st);
 				task.setResult(st.getResult()); // set the result
 				continue;
 			}
-			// accumulate mem and time usage
-			task.setTimeUsage(task.getTimeUsage() + st.getTimeUsage());
-			task.setMemoryUsage(task.getMemoryUsage() + st.getMemoryUsage() / 1024); // in KiB
-
 			// check the answer
 			int score = checker.getScore(i);
 			st.setScore(score);

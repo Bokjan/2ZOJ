@@ -1,6 +1,8 @@
 {
   // JNI 动态链接库位置（绝对路径）
   "jni_library" : "",
+  // QDUJUDGER 动态链接库位置（绝对路径）
+  "judger_library" : "",
 
   // MySQL 数据库配置
   "mysql_port" : 3306,

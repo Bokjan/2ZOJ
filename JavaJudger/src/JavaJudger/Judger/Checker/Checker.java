@@ -11,9 +11,6 @@ abstract public class Checker {
 	public void setProblem(Problem problem) {
 		this.problem = problem;
 		this.subMarks = 100 / this.problem.getSubtaskCount();
-		if (this.subMarks * this.problem.getSubtaskCount() < 100) {
-			++this.subMarks;
-		}
 	}
 
 	abstract public int getScore(int subtaskId);

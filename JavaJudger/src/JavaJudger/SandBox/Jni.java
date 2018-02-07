@@ -51,7 +51,6 @@ public class Jni {
 		this.jniUpdateOutputFile(conf.getOutputFile());
 		this.jniUpdateErrorFile(conf.getErrorFile());
 		this.jniUpdateExecuteableFile(conf.getExePath());
-
 	}
 
 	public void updateInputFile(String s) {

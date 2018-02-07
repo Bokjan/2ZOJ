@@ -1,15 +1,25 @@
 package JavaJudger.SandBox;
 
 import JavaJudger.Model.Task;
+import com.google.gson.annotations.SerializedName;
 
 public class Result {
+	@SerializedName("cpu_time")
 	private int cpuTime;
+	@SerializedName("real_time")
 	private int realTime;
+	@SerializedName("memory")
 	private long memory;
+	@SerializedName("signal")
 	private int signal;
+	@SerializedName("exit_code")
 	private int exitCode;
-	private State state;
-	private Error error;
+	@SerializedName("error")
+	private int errorNum;
+	@SerializedName("result")
+	private int resultNum;
+	private State stateEnum;
+	private Error errorEnum;
 
 	public enum State {
 		SUCCESS,
@@ -91,71 +101,79 @@ public class Result {
 	}
 
 	public State getState() {
-		return state;
+		return stateEnum;
 	}
 
 	public void setState(int state) {
 		switch (state) {
 			case 0:
-				this.state = State.SUCCESS;
+				this.stateEnum = State.SUCCESS;
 				break;
 			case 1:
-				this.state = State.CPU_TIME_LIMIT_EXCEEDED;
+				this.stateEnum = State.CPU_TIME_LIMIT_EXCEEDED;
 				break;
 			case 2:
-				this.state = State.REAL_TIME_LIMIT_EXCEEDED;
+				this.stateEnum = State.REAL_TIME_LIMIT_EXCEEDED;
 				break;
 			case 3:
-				this.state = State.MEMORY_LIMIT_EXCEEDED;
+				this.stateEnum = State.MEMORY_LIMIT_EXCEEDED;
 				break;
 			case 4:
-				this.state = State.RUNTIME_ERROR;
+				this.stateEnum = State.RUNTIME_ERROR;
 				break;
 			case 5:
-				this.state = State.SYSTEM_ERROR;
+				this.stateEnum = State.SYSTEM_ERROR;
 				break;
 		}
 	}
 
 	public Error getError() {
-		return error;
+		return errorEnum;
 	}
 
 	public void setError(int error) {
 		switch (error) {
 			case 0:
-				this.error = Error.SUCCESS;
+				this.errorEnum = Error.SUCCESS;
 				break;
 			case -1:
-				this.error = Error.INVALID_CONFIG;
+				this.errorEnum = Error.INVALID_CONFIG;
 				break;
 			case -2:
-				this.error = Error.FORK_FAILED;
+				this.errorEnum = Error.FORK_FAILED;
 				break;
 			case -3:
-				this.error = Error.PTHREAD_FAILED;
+				this.errorEnum = Error.PTHREAD_FAILED;
 				break;
 			case -4:
-				this.error = Error.WAIT_FAILED;
+				this.errorEnum = Error.WAIT_FAILED;
 				break;
 			case -5:
-				this.error = Error.ROOT_REQUIRED;
+				this.errorEnum = Error.ROOT_REQUIRED;
 				break;
 			case -6:
-				this.error = Error.LOAD_SECCOMP_FAILED;
+				this.errorEnum = Error.LOAD_SECCOMP_FAILED;
 				break;
 			case -7:
-				this.error = Error.SETRLIMIT_FAILED;
+				this.errorEnum = Error.SETRLIMIT_FAILED;
 				break;
 			case -8:
-				this.error = Error.DUP2_FAILED;
+				this.errorEnum = Error.DUP2_FAILED;
 				break;
 			case -9:
-				this.error = Error.SETUID_FAILED;
+				this.errorEnum = Error.SETUID_FAILED;
 				break;
 			case -10:
-				this.error = Error.EXECVE_FAILED;
+				this.errorEnum = Error.EXECVE_FAILED;
 				break;
 		}
+	}
+
+	public int getErrorNum() {
+		return errorNum;
+	}
+
+	public int getResultNum() {
+		return resultNum;
 	}
 }
