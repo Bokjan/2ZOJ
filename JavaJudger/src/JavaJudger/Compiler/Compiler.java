@@ -64,24 +64,29 @@ public abstract class Compiler {
 		}
 		this.setArguments();
 		Process process;
+		int stderrLen = 0;
+		int stdoutLen = 0;
 		stderrBuffer = new char[bufferSize];
 		stdoutBuffer = new char[bufferSize];
 		try {
 			String[] args = new String[cmdArgs.size()];
 			process = Runtime.getRuntime().exec(cmdArgs.toArray(args));
 			InputStreamReader isr = new InputStreamReader(process.getErrorStream());
-			isr.read(stderrBuffer, 0, bufferSize - 1);
+			stderrLen = isr.read(stderrBuffer, 0, bufferSize - 1);
 			isr.close();
 			isr = new InputStreamReader(process.getInputStream());
-			isr.read(stdoutBuffer, 0, bufferSize - 1);
+			stdoutLen = isr.read(stdoutBuffer, 0, bufferSize - 1);
 			isr.close();
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 			return false;
 		}
-		this.outputMessage = String.valueOf(stderrBuffer) + String.valueOf(stdoutBuffer);
-		if (this.outputMessage.charAt(0) == 0) {
-			this.outputMessage = "";
+		this.outputMessage = "";
+		if (stderrLen > 0) {
+			this.outputMessage += String.valueOf(stderrBuffer, 0, stderrLen);
+		}
+		if (stdoutLen > 0) {
+			this.outputMessage += String.valueOf(stdoutBuffer, 0, stdoutLen);
 		}
 		return this.isSuccessful();
 	}
