@@ -351,9 +351,10 @@ class ProblemController extends Controller
 	}
 	public function commentajax()
 	{
+		global $user;
 		$db=new epdb('comment');
 		$data=array(
-			'pid'=>$_POST['pid'],
+			'pid'=>$user->id,
 			'uid'=>$_POST['uid'],
 			'text'=>addslashes($_POST['comment']),
 			'time'=>time(),
