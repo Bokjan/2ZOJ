@@ -279,6 +279,7 @@ class ProblemController extends Controller
 			$this->error('INVALID REQUEST');
 		$q=addslashes($_POST['query']);
 		$db=new epdb('problem');
+		$_GET['sortby']='nosort';
 		$this->set('page',1);
 		$this->set('maxpage',1);
 		$this->set('title',"Search result for \"{$q}\"");
