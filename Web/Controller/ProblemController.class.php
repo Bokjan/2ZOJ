@@ -354,8 +354,8 @@ class ProblemController extends Controller
 		global $user;
 		$db=new epdb('comment');
 		$data=array(
-			'pid'=>$user->id,
-			'uid'=>$_POST['uid'],
+			'pid'=>$_POST['pid'],
+			'uid'=>$user->id,
 			'text'=>addslashes($_POST['comment']),
 			'time'=>time(),
 		);
